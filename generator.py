@@ -1,8 +1,8 @@
-
 # generator doesn't store the values in memory, it yields one value at a time
 
 class ITimesGenerator:
     def __init__(self, n):
+        # 2 state variables store less memory than a complete list
         self.n = n
         self.last = 0
 
@@ -26,4 +26,15 @@ class ITimesGenerator:
 generator = ITimesGenerator(10)
 
 for i in generator:
+    print(i)
+
+
+def gen(n):
+    for i in range(n):
+        # yield pauses the function and returns the value
+        # return would be the stop of the function
+        yield i ** 2
+
+
+for i in gen(10):
     print(i)
