@@ -46,9 +46,9 @@ with FileWithCtxManager('file.txt', 'r') as file:
     # fail block below since there is a read mode not write
     file.write('Hello, World!')
 
-with FileWithCtxManager('file.txt', 'r') as file:
-    # This one will crash
-    raise Exception('Something went wrong!')
+# with FileWithCtxManager('file.txt', 'r') as file:
+#     # This one will crash
+#     raise Exception('Something went wrong!')
 
 ## context manager with generator
 import contextlib
@@ -60,3 +60,49 @@ def open_file(filename, mode):
     yield f
     f.close()
     print('exit')
+
+
+import threading
+
+class LockedResource:
+    def __init__(self, resource):
+        self.lock = threading.Lock()
+        self.resource = resource
+
+    def __enter__(self):
+        self.lock.acquire()
+        return self.resource
+
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        self.lock.release()
+
+import time
+
+resource = {}
+lr = LockedResource(resource)
+
+def worker1(resource):
+    with lr as r:
+        print("Worker 1 is working...")
+        r["key"] = "value1"
+        time.sleep(1)  # Simulate some work
+        print("Worker 1 finished.")
+
+def worker2(resource):
+    with lr as r:
+        print("Worker 2 is working...")
+        r["key"] = "value2"
+        time.sleep(1)  # Simulate some work
+        print("Worker 2 finished.")
+
+
+thread1 = threading.Thread(target=worker1, args=(resource,))
+thread2 = threading.Thread(target=worker2, args=(resource,))
+
+thread1.start()
+thread2.start()
+
+thread1.join()
+thread2.join()
+
+print(resource)
