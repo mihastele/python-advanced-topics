@@ -28,7 +28,7 @@ generator = ITimesGenerator(10)
 for i in generator:
     print(i)
 
-
+import sys
 def gen(n):
     for i in range(n):
         # yield pauses the function and returns the value
@@ -50,3 +50,8 @@ g = gen(10)
 print(next(g))
 print(next(g))
 print(next(g))
+
+x = [i ** 2 for i in range(1000)]
+y = gen(1000)
+print(sys.getsizeof(x))
+print(sys.getsizeof(y))
