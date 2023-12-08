@@ -32,6 +32,7 @@ for i in generator:
 def gen(n):
     for i in range(n):
         # yield pauses the function and returns the value
+        # yield waits until the function is called again then it continues
         # return would be the stop of the function
         yield i ** 2
 
