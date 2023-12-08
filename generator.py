@@ -39,3 +39,14 @@ def gen(n):
 
 for i in gen(10):
     print(i)
+
+# new generators always start at the beginning
+print(next(gen(10)))
+print(next(gen(10)))
+print(next(gen(10)))
+
+# the generator is stored in the variable to be more useful
+g = gen(10)
+print(next(g))
+print(next(g))
+print(next(g))
